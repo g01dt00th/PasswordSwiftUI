@@ -29,7 +29,7 @@ struct SignUpView: View {
     var body: some View {
         ZStack {
             ZStack {
-                PlusButton()
+                PlusButtonAuthView()
             }
             .offset(y: -Spacings() * 6.5)
             

@@ -10,9 +10,9 @@ struct SignInView: View {
     @State private var pulsate = false
     
     @EnvironmentObject private var session: SessionStore
-    
-    func Spacings() -> CGFloat {
-        return (UIScreen.main.bounds.width - 25) / 11
+
+    func Spacing() -> CGFloat {
+        return (UIScreen.main.bounds.width - 15) / 10
     }
     
     func signIn() {
@@ -30,72 +30,67 @@ struct SignInView: View {
         NavigationView {
             ZStack {
                 ZStack {
-                    PlusButton()
+                    PlusButtonAuthView()
                     }
-                    .offset(y: -Spacings() * 6.5)
-                        
-                        VStack(spacing: Spacings() / 2.5) {
+                    .contentShape(Rectangle())
+                    .offset(y: -Spacing() * 6.5)
+                    
+                        VStack {
                             HStack {
                                 Text("Password App")
                                     .font(.title)
                                     .bold()
-                                
-                                Text("Welcome back, dude")
-                                    .font(.subheadline)
-                                    .foregroundColor(.gray)
-                            }
-                            .offset(y: -Spacings() * -6.5)
                             
-                            VStack {
+                                Text("Welcome back, dude")
+                                    .font(.footnote)
+                            }
+                            .offset(x: -Spacing() * 0, y: -Spacing() * -6.5)
+                            
                                 VStack {
                                     TextField("Email", text: $email)
-                                        .font(.system(size: 14))
-                                        .foregroundColor(.black)
-                                        .padding(.bottom)
+                                        .font(.subheadline)
+                                        .frame(height: 30)
                                     
                                     SecureField("Password", text: $password)
-                                    .font(.system(size: 14))
-                                    .foregroundColor(.black)
+                                        .font(.subheadline)
+                                        .frame(height: 30)
                                 }
-                                .padding(.horizontal)
-                                
-                                if (error != "") {
+                                .frame(width: 322)
+                                .offset(y: -Spacing() * -7.0)
+                                    
+                            if (error != "") {
                                     Text(error)
-                                        .font(.system(size: 14, weight: .semibold))
+                                        .font(.subheadline)
+                                        .background(Color.blue)
                                         .foregroundColor(.red)
-                                        .offset(y: -Spacings() * -0.3)
-                                }
+                                        .offset(y: -Spacing() * -7.5)
                             }
-                            .padding()
-                            .offset(y: -Spacings() * -6.5)
                             
                             Spacer()
                             
-                            CustomButtonAuthView(action: self.signIn) {
-                                Text("Sign In")
-                            }
-                            .padding()
-                            .offset(x: -Spacings() * -5.1, y: -Spacings() * -3.8)
-                            .shadow(color: .blue, radius: 180.0).animation(Animation.easeInOut(duration: 0.5).repeatForever(autoreverses: true).speed(0.2)).onAppear() {
-                                            self.pulsate.toggle()
-                            }
-                            
-                            VStack {
+                            HStack {
+                                CustomButtonAuthView(action: self.signIn) {
+                                    Text("Sign In")
+                                }
+                                .offset(x: -Spacing() * -5.8, y: -Spacing() * 0.0)
+                                .shadow(color: .blue, radius: 180.0).animation(Animation.easeInOut(duration: 0.5).repeatForever(autoreverses: true).speed(0.2)).onAppear() {
+                                                self.pulsate.toggle()
+                                }
+                                
                                 NavigationLink(destination: SignUpView()) {
                                         HStack {
                                             Text("Create account")
-                                                .font(.system(size: 15, weight: .light))
+                                                .font(.callout)
                                                 .foregroundColor(.blue)
-                                        }
-                                        .padding()
-                                        .offset(x: -Spacings() * 3.7, y: -Spacings() * 0.2)
-                                }
                             }
                         }
-                        .padding(.horizontal, 15)
+                                .offset(x: -Spacing() * 5.4)
                     }
+                        .offset(y: -Spacing() * -1.5)
+                }
             }
         }
+    }
 }
 
 
