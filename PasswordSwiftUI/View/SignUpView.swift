@@ -2,14 +2,14 @@ import SwiftUI
 
 struct SignUpView: View {
     
-    @State var email: String = ""
-    @State var password: String = ""
-    @State var error: String = ""
-    @State var open = false
+    @State private var email = ""
+    @State private var password = ""
+    @State private var error = ""
     
-    @State private var pulsate = false
+    @State private var open = true
+    @State private var pulsate = true
     
-    @EnvironmentObject var session: SessionStore
+    @EnvironmentObject private var session: SessionStore
     
     func signUp() {
         session.signUpWithMailPass(email: email, password: password) { (result, error) in
@@ -22,8 +22,8 @@ struct SignUpView: View {
         }
     }
     
-    func Spacings() -> CGFloat {
-        return (UIScreen.main.bounds.width - 25) / 11
+    func Spacing() -> CGFloat {
+        return (UIScreen.main.bounds.width - 15) / 10
     }
     
     var body: some View {
@@ -31,60 +31,63 @@ struct SignUpView: View {
             ZStack {
                 PlusButtonAuthView()
             }
-            .offset(y: -Spacings() * 6.5)
+            .offset(x: -Spacing() * -3.9, y: -Spacing() * 2.9)
             
-            VStack(spacing: Spacings() / 2.5) {
+            VStack {
                 HStack {
                     Text("Create account")
                         .font(.title)
                         .bold()
                     
                     Text("Same shit, dude")
-                        .font(.subheadline)
-                        .foregroundColor(.gray)
+                        .font(.footnote)
                 }
-                .offset(y: -Spacings() * -6.5)
+                .offset(x: -Spacing() * 0, y: -Spacing() * -5.5)
                 
                 VStack {
-                    VStack {
-                        TextField("Email", text: $email)
-                            .font(.system(size: 14))
-                            .padding(.bottom)
-                        
-                        SecureField("Password", text: $password)
-                            .font(.system(size: 14))
-                    }
-                    .padding(.horizontal)
+                    TextField("Email", text: $email)
+                        .font(.headline)
+                        .frame(height: 30)
                     
-                    if (error != "") {
-                        Text(error)
-                            .font(.system(size: 14, weight: .semibold))
-                            .foregroundColor(.red)
-                            .padding()
-                    }
+                    SecureField("Password", text: $password)
+                        .font(.headline)
+                        .frame(height: 30)
                 }
-                .padding()
-                .offset(y: -Spacings() * -6.5)
+                .frame(width: 322)
+                .offset(y: -Spacing() * -6.0)
+                
+                if (error != "") {
+                    Text(error)
+                        .font(.subheadline)
+                        .background(Color.blue)
+                        .foregroundColor(.red)
+                        .offset(y: -Spacing() * -7.5)
+                }
                 
                 Spacer()
                 
-                CustomButtonAuthView(action: signUp) {
-                    Text("Sign Up")
-                        .foregroundColor(.white)
+                HStack {
+                    CustomButtonAuthView(action: self.signUp) {
+                        Text("Sign In")
+                    }
+                    .offset(x: -Spacing() * -4.0, y: -Spacing() * 0.0)
+                    .shadow(color: Color(red: 147 / 255, green: 156 / 255, blue: 238 / 255),
+                            radius: 180.0)
+                        .animation(Animation.easeInOut(duration: 0.5)
+                            .repeatForever(autoreverses: true)
+                            .speed(0.2))
+                        .onAppear() {
+                            self.pulsate.toggle()
+                    }
                 }
-                .padding()
-                .offset(x: -Spacings() * -5.1, y: -Spacings() * -1.8)
-                .shadow(color: .blue, radius: 180.0).animation(Animation.easeInOut(duration: 0.5).repeatForever(autoreverses: true).speed(0.2)).onAppear() {
-                                self.pulsate.toggle()
-                }
+                .offset(y: -Spacing() * -1.0)
             }
-            .padding(.horizontal, 10)
         }
     }
-}
-
-struct SignUpView_Previews: PreviewProvider {
-    static var previews: some View {
-        SignUpView().environmentObject(SessionStore())
+    
+    struct SignUpView_Previews: PreviewProvider {
+        static var previews: some View {
+            SignUpView().environmentObject(SessionStore())
+        }
     }
 }

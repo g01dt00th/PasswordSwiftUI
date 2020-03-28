@@ -21,10 +21,10 @@ struct CustomButtonAuthView<MyContent: View>: View {
             ZStack {
                 Circle()
                     .frame(width: 150, height: 150)
-                    .background(Capsule().fill(Color.blue))
+                    .background(Capsule()).foregroundColor(Color(red: 147 / 255, green: 156 / 255, blue: 238 / 255))
                     .scaleEffect(pulsate ? 1 : 1.2)
                     .animation(Animation.easeInOut(duration: 0.5)
-                    .repeatForever(autoreverses: true).speed(0.2))
+                        .repeatForever(autoreverses: true).speed(0.2))
                     .onAppear() { self.pulsate.toggle() }
                 content
                     .frame(width: 150, height: 150)
